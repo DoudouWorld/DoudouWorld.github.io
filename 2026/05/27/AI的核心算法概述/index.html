@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>AI的核心算法概述 | xiaoLin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="引言人工智能的核心是算法。从早期的逻辑推理到如今的深度神经网络，AI 算法经历了从符号主义到连接主义、从手工特征到自动表示的演进。本文将系统介绍 AI 领域中几类核心算法的思想、原理和应用场景。 一、搜索与优化算法搜索是 AI 最早使用的方法之一，其核心思想是在一个状态空间中寻找最优解。 1.1  uninformed Search（盲目搜索）广度优先搜索（BFS）和深度优先搜索（DFS）是最基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI的核心算法概述">
+<meta property="og:url" content="https://doudouworld.github.io/2026/05/27/AI%E7%9A%84%E6%A0%B8%E5%BF%83%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="xiaoLin">
+<meta property="og:description" content="引言人工智能的核心是算法。从早期的逻辑推理到如今的深度神经网络，AI 算法经历了从符号主义到连接主义、从手工特征到自动表示的演进。本文将系统介绍 AI 领域中几类核心算法的思想、原理和应用场景。 一、搜索与优化算法搜索是 AI 最早使用的方法之一，其核心思想是在一个状态空间中寻找最优解。 1.1  uninformed Search（盲目搜索）广度优先搜索（BFS）和深度优先搜索（DFS）是最基础">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-05-27T02:30:00.000Z">
+<meta property="article:modified_time" content="2026-05-27T01:57:47.109Z">
+<meta property="article:author" content="xiaoLin">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="深度学习">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="xiaoLin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">xiaoLin</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Code · Think · Create</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://doudouworld.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-AI的核心算法概述" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/05/27/AI%E7%9A%84%E6%A0%B8%E5%BF%83%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/" class="article-date">
+  <time class="dt-published" datetime="2026-05-27T02:30:00.000Z" itemprop="datePublished">2026-05-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      AI的核心算法概述
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>人工智能的核心是算法。从早期的逻辑推理到如今的深度神经网络，AI 算法经历了从符号主义到连接主义、从手工特征到自动表示的演进。本文将系统介绍 AI 领域中几类核心算法的思想、原理和应用场景。</p>
+<h2 id="一、搜索与优化算法"><a href="#一、搜索与优化算法" class="headerlink" title="一、搜索与优化算法"></a>一、搜索与优化算法</h2><p>搜索是 AI 最早使用的方法之一，其核心思想是在一个状态空间中寻找最优解。</p>
+<h3 id="1-1-uninformed-Search（盲目搜索）"><a href="#1-1-uninformed-Search（盲目搜索）" class="headerlink" title="1.1  uninformed Search（盲目搜索）"></a>1.1  uninformed Search（盲目搜索）</h3><p><strong>广度优先搜索</strong>（BFS）和<strong>深度优先搜索</strong>（DFS）是最基础的搜索策略：</p>
+<ul>
+<li><strong>BFS</strong>：逐层扩展节点，保证找到最短路径，但空间复杂度为 O(b^d)</li>
+<li><strong>DFS</strong>：沿一条路径深入到底，空间复杂度仅 O(d)，但不保证最优解</li>
+</ul>
+<h3 id="1-2-Informed-Search（启发式搜索）"><a href="#1-2-Informed-Search（启发式搜索）" class="headerlink" title="1.2 Informed Search（启发式搜索）"></a>1.2 Informed Search（启发式搜索）</h3><p><em><em>A</em> 算法</em>*是启发式搜索的经典代表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f(n) = g(n) + h(n)</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>g(n)</code> 是从起点到当前节点的实际代价，<code>h(n)</code> 是从当前节点到目标的估计代价（启发函数）。当启发函数是可采纳的（不高估真实代价）时，A* 保证找到最优解。</p>
+<p>A* 广泛应用于路径规划、游戏 AI 和机器人导航。</p>
+<h3 id="1-3-蒙特卡洛树搜索（MCTS）"><a href="#1-3-蒙特卡洛树搜索（MCTS）" class="headerlink" title="1.3 蒙特卡洛树搜索（MCTS）"></a>1.3 蒙特卡洛树搜索（MCTS）</h3><p>MCTS 通过随机模拟来评估不同选择的优劣，无需精确的启发函数。它是 AlphaGo 的核心组件之一：</p>
+<ol>
+<li><strong>选择</strong>：从根节点出发，沿着最有潜力的路径向下选择</li>
+<li><strong>扩展</strong>：在未完全展开的节点上添加新子节点</li>
+<li><strong>模拟</strong>：从新节点开始随机对弈至终局</li>
+<li><strong>回溯</strong>：将模拟结果沿路径向上更新统计信息</li>
+</ol>
+<h2 id="二、传统机器学习算法"><a href="#二、传统机器学习算法" class="headerlink" title="二、传统机器学习算法"></a>二、传统机器学习算法</h2><h3 id="2-1-线性模型"><a href="#2-1-线性模型" class="headerlink" title="2.1 线性模型"></a>2.1 线性模型</h3><p><strong>线性回归</strong>和<strong>逻辑回归</strong>是最基础的监督学习算法：</p>
+<ul>
+<li><strong>线性回归</strong>：通过最小化均方误差来拟合数据，公式为 <code>y = w·x + b</code></li>
+<li><strong>逻辑回归</strong>：在线性模型基础上加入 Sigmoid 函数，用于二分类任务</li>
+</ul>
+<p>虽然简单，但线性模型具有可解释性强、训练快速等优点，在工业界仍然被广泛使用。</p>
+<h3 id="2-2-支持向量机（SVM）"><a href="#2-2-支持向量机（SVM）" class="headerlink" title="2.2 支持向量机（SVM）"></a>2.2 支持向量机（SVM）</h3><p>SVM 的核心思想是找到一个超平面，使得不同类别的样本到超平面的间隔最大化。对于非线性可分的数据，SVM 使用<strong>核技巧</strong>（Kernel Trick）将数据映射到高维空间：</p>
+<ul>
+<li><strong>线性核</strong>：<code>K(x, y) = x·y</code></li>
+<li><strong>多项式核</strong>：<code>K(x, y) = (x·y + c)^d</code></li>
+<li><strong>RBF 核</strong>：<code>K(x, y) = exp(-γ||x - y||²)</code></li>
+</ul>
+<p>SVM 在深度学习兴起之前，是图像分类、文本分类等任务的最强算法之一。</p>
+<h3 id="2-3-决策树与集成学习"><a href="#2-3-决策树与集成学习" class="headerlink" title="2.3 决策树与集成学习"></a>2.3 决策树与集成学习</h3><p><strong>决策树</strong>通过递归地选择最优特征来划分数据，构建一棵树形结构：</p>
+<ul>
+<li><strong>ID3</strong>：使用信息增益作为分裂标准</li>
+<li><strong>C4.5</strong>：使用信息增益率，支持连续属性</li>
+<li><strong>CART</strong>：使用基尼不纯度，生成二叉树</li>
+</ul>
+<p>单个决策树容易过拟合，<strong>集成学习</strong>通过组合多个弱模型来提升性能：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>思想</th>
+<th>代表算法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bagging</td>
+<td>并行训练多个模型并投票</td>
+<td>随机森林</td>
+</tr>
+<tr>
+<td>Boosting</td>
+<td>串行训练，每个模型关注前一个的错误</td>
+<td>AdaBoost, GBDT, XGBoost</td>
+</tr>
+<tr>
+<td>Stacking</td>
+<td>用元模型组合多个基模型的预测</td>
+<td>模型融合</td>
+</tr>
+</tbody></table>
+<p><strong>XGBoost</strong>和<strong>LightGBM</strong>是结构化数据竞赛中的利器，在许多 Kaggle 比赛中占据主导地位。</p>
+<h2 id="三、神经网络与深度学习"><a href="#三、神经网络与深度学习" class="headerlink" title="三、神经网络与深度学习"></a>三、神经网络与深度学习</h2><h3 id="3-1-感知机与多层网络"><a href="#3-1-感知机与多层网络" class="headerlink" title="3.1 感知机与多层网络"></a>3.1 感知机与多层网络</h3><p><strong>感知机</strong>（Perceptron）是最简单的神经网络单元：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">output = activation(w·x + b)</span><br></pre></td></tr></table></figure>
+
+<p>多层感知机（MLP）通过堆叠多个感知机层来学习非线性映射。万能近似定理表明：一个包含足够多隐藏单元的 MLP 可以近似任何连续函数。</p>
+<h3 id="3-2-反向传播算法"><a href="#3-2-反向传播算法" class="headerlink" title="3.2 反向传播算法"></a>3.2 反向传播算法</h3><p>反向传播（Backpropagation）是训练神经网络的核心算法，基于链式法则计算损失函数对每个参数的梯度：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">∂L/∂w = ∂L/∂output · ∂output/∂net · ∂net/∂w</span><br></pre></td></tr></table></figure>
+
+<p>配合<strong>随机梯度下降</strong>（SGD）或其变体（Adam、RMSProp），网络可以从数据中自动学习参数。</p>
+<h3 id="3-3-卷积神经网络（CNN）"><a href="#3-3-卷积神经网络（CNN）" class="headerlink" title="3.3 卷积神经网络（CNN）"></a>3.3 卷积神经网络（CNN）</h3><p>CNN 利用<strong>卷积操作</strong>提取空间特征，特别适合处理网格化数据（如图像）：</p>
+<ul>
+<li><strong>卷积层</strong>：使用可学习的卷积核在输入上滑动，提取局部特征</li>
+<li><strong>池化层</strong>：降采样，减少参数量，增强平移不变性</li>
+<li><strong>全连接层</strong>：将提取的特征映射到输出空间</li>
+</ul>
+<p>经典 CNN 架构演进：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LeNet (1998) → AlexNet (2012) → VGG (2014) → GoogLeNet (2014)</span><br><span class="line">→ ResNet (2015) → EfficientNet (2019) → ConvNeXt (2022)</span><br></pre></td></tr></table></figure>
+
+<p><strong>ResNet</strong>的残差连接解决了深层网络的梯度消失问题，使训练上百层甚至上千层的网络成为可能。</p>
+<h3 id="3-4-循环神经网络（RNN）"><a href="#3-4-循环神经网络（RNN）" class="headerlink" title="3.4 循环神经网络（RNN）"></a>3.4 循环神经网络（RNN）</h3><p>RNN 通过隐藏状态传递信息，能够处理序列数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">h_t = f(W · x_t + U · h_&#123;t-1&#125; + b)</span><br></pre></td></tr></table></figure>
+
+<p>但标准 RNN 面临<strong>梯度消失</strong>问题，难以捕捉长距离依赖。<strong>LSTM</strong>和<strong>GRU</strong>通过门控机制缓解了这一问题：</p>
+<ul>
+<li><strong>遗忘门</strong>：决定丢弃哪些历史信息</li>
+<li><strong>输入门</strong>：决定保留哪些新信息</li>
+<li><strong>输出门</strong>：决定当前时刻的输出</li>
+</ul>
+<h3 id="3-5-Transformer-架构"><a href="#3-5-Transformer-架构" class="headerlink" title="3.5 Transformer 架构"></a>3.5 Transformer 架构</h3><p>2017 年，Vaswani 等人在论文《Attention Is All You Need》中提出了 Transformer 架构，彻底改变了 NLP 乃至整个 AI 领域。</p>
+<p>Transformer 的核心是<strong>自注意力机制</strong>（Self-Attention）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Attention(Q, K, V) = softmax(QK^T / √d_k) · V</span><br></pre></td></tr></table></figure>
+
+<p>其中 Q（Query）、K（Key）、V（Value）是从输入投影得到的矩阵。自注意力允许序列中的每个位置关注其他所有位置，从而捕捉全局依赖关系。</p>
+<p>相比 RNN，Transformer 的优势：</p>
+<ul>
+<li><strong>并行计算</strong>：不依赖序列顺序，可以充分利用 GPU 并行能力</li>
+<li><strong>全局感受野</strong>：每个位置直接关注所有其他位置</li>
+<li><strong>可扩展性</strong>：更容易扩展到极大规模</li>
+</ul>
+<h2 id="四、生成式模型"><a href="#四、生成式模型" class="headerlink" title="四、生成式模型"></a>四、生成式模型</h2><h3 id="4-1-变分自编码器（VAE）"><a href="#4-1-变分自编码器（VAE）" class="headerlink" title="4.1 变分自编码器（VAE）"></a>4.1 变分自编码器（VAE）</h3><p>VAE 结合自编码器和概率推断，学习数据的潜在分布。它由编码器（将输入映射到隐空间分布）和解码器（从隐空间采样重建）组成，通过最大化证据下界（ELBO）来训练。</p>
+<h3 id="4-2-生成对抗网络（GAN）"><a href="#4-2-生成对抗网络（GAN）" class="headerlink" title="4.2 生成对抗网络（GAN）"></a>4.2 生成对抗网络（GAN）</h3><p>GAN 由两个网络组成：</p>
+<ul>
+<li><strong>生成器</strong>（Generator）：从随机噪声生成逼真样本</li>
+<li><strong>判别器</strong>（Discriminator）：判断样本是真实数据还是生成数据</li>
+</ul>
+<p>两者通过对抗训练不断提升，最终生成器可以产生以假乱真的样本。</p>
+<p>GAN 的应用包括图像生成、风格迁移、超分辨率重建等。</p>
+<h3 id="4-3-扩散模型（Diffusion-Model）"><a href="#4-3-扩散模型（Diffusion-Model）" class="headerlink" title="4.3 扩散模型（Diffusion Model）"></a>4.3 扩散模型（Diffusion Model）</h3><p>扩散模型通过一个逐步加噪和逐步去噪的过程来生成数据：</p>
+<ol>
+<li><strong>前向过程</strong>：逐步向数据添加高斯噪声，直到变成纯噪声</li>
+<li><strong>反向过程</strong>：训练神经网络学习如何从噪声中逐步恢复数据</li>
+</ol>
+<p>DDPM、Stable Diffusion、DALL-E 2 等均基于扩散模型。相比 GAN，扩散模型训练更稳定，生成质量更高，已成为当前图像生成的主流方法。</p>
+<h2 id="五、强化学习"><a href="#五、强化学习" class="headerlink" title="五、强化学习"></a>五、强化学习</h2><p>强化学习（RL）研究智能体如何在环境中采取行动以最大化累积奖励。</p>
+<h3 id="5-1-马尔可夫决策过程（MDP）"><a href="#5-1-马尔可夫决策过程（MDP）" class="headerlink" title="5.1 马尔可夫决策过程（MDP）"></a>5.1 马尔可夫决策过程（MDP）</h3><p>MDP 是强化学习的数学框架，由五元组 <code>(S, A, P, R, γ)</code> 定义：</p>
+<ul>
+<li><code>S</code>：状态空间</li>
+<li><code>A</code>：动作空间</li>
+<li><code>P</code>：状态转移概率</li>
+<li><code>R</code>：奖励函数</li>
+<li><code>γ</code>：折扣因子</li>
+</ul>
+<h3 id="5-2-经典算法"><a href="#5-2-经典算法" class="headerlink" title="5.2 经典算法"></a>5.2 经典算法</h3><ul>
+<li><strong>Q-Learning</strong>：通过 Q 表学习状态-动作对的价值</li>
+<li><strong>深度 Q 网络</strong>（DQN）：用神经网络替代 Q 表，解决高维状态空间问题</li>
+<li><strong>策略梯度</strong>（Policy Gradient）：直接优化策略函数</li>
+<li><strong>PPO</strong>（Proximal Policy Optimization）：稳定高效的策略梯度算法</li>
+<li><strong>Actor-Critic</strong>：结合值函数和策略梯度两者的优势</li>
+</ul>
+<h3 id="5-3-应用"><a href="#5-3-应用" class="headerlink" title="5.3 应用"></a>5.3 应用</h3><ul>
+<li><strong>AlphaGo</strong>：结合深度神经网络和 MCTS，击败围棋世界冠军</li>
+<li><strong>机器人控制</strong>：让机器人学会行走、抓取等技能</li>
+<li><strong>自动驾驶</strong>：决策规划和车辆控制</li>
+<li><strong>资源调度</strong>：数据中心能量管理、网络资源分配</li>
+</ul>
+<h2 id="六、大语言模型的核心技术"><a href="#六、大语言模型的核心技术" class="headerlink" title="六、大语言模型的核心技术"></a>六、大语言模型的核心技术</h2><h3 id="6-1-预训练-微调范式"><a href="#6-1-预训练-微调范式" class="headerlink" title="6.1 预训练-微调范式"></a>6.1 预训练-微调范式</h3><p>大语言模型采用两阶段训练：</p>
+<ol>
+<li><strong>预训练</strong>：在海量文本上学习语言建模（预测下一个词），获得通用的语言理解能力</li>
+<li><strong>微调</strong>：在特定任务数据上进一步训练，适配下游应用</li>
+</ol>
+<h3 id="6-2-关键训练技术"><a href="#6-2-关键训练技术" class="headerlink" title="6.2 关键训练技术"></a>6.2 关键训练技术</h3><ul>
+<li><strong>指令微调</strong>（Instruction Tuning）：使用指令-回答格式的数据训练，使模型理解并遵循指令</li>
+<li><strong>RLHF</strong>（基于人类反馈的强化学习）：利用人类偏好数据训练奖励模型，引导模型生成更符合人类期望的输出</li>
+<li><strong>思维链</strong>（Chain-of-Thought）：引导模型逐步推理，显著提升复杂推理任务的表现</li>
+</ul>
+<h3 id="6-3-高效微调方法"><a href="#6-3-高效微调方法" class="headerlink" title="6.3 高效微调方法"></a>6.3 高效微调方法</h3><p>面对千亿级参数的模型，全量微调成本过高，出现了多种参数高效微调（PEFT）方法：</p>
+<ul>
+<li><strong>LoRA</strong>（Low-Rank Adaptation）：在注意力层注入低秩矩阵，仅训练少量参数</li>
+<li><strong>Prefix Tuning</strong>：在输入序列前添加可学习的前缀向量</li>
+<li><strong>Adapter</strong>：在网络层中插入小型适配模块</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>AI 算法从最初的符号推理到今天的深度神经网络，经历了几次范式转换。每种算法都有其适用的场景：</p>
+<table>
+<thead>
+<tr>
+<th>问题类型</th>
+<th>推荐算法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>结构化数据预测</td>
+<td>XGBoost &#x2F; LightGBM</td>
+</tr>
+<tr>
+<td>图像分类&#x2F;检测</td>
+<td>CNN（ResNet, EfficientNet）</td>
+</tr>
+<tr>
+<td>序列建模（短）</td>
+<td>LSTM &#x2F; GRU</td>
+</tr>
+<tr>
+<td>NLP &#x2F; 多模态</td>
+<td>Transformer</td>
+</tr>
+<tr>
+<td>图像生成</td>
+<td>扩散模型</td>
+</tr>
+<tr>
+<td>决策与控制</td>
+<td>强化学习（PPO, SAC）</td>
+</tr>
+<tr>
+<td>对话与创作</td>
+<td>大语言模型</td>
+</tr>
+</tbody></table>
+<p>理解这些算法的原理和适用场景，是在实际工作中选择和优化 AI 方案的基础。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://doudouworld.github.io/2026/05/27/AI%E7%9A%84%E6%A0%B8%E5%BF%83%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/" data-id="cmpnezwon0001sg0b9bqg371w" data-title="AI的核心算法概述" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag">深度学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2026/05/27/AI%E6%8A%80%E6%9C%AF%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          AI技术的实际应用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2026/05/27/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%9A%84%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">人工智能的发展历程</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A7%E4%B8%9A/" rel="tag">产业</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%86%E5%8F%B2/" rel="tag">历史</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E8%B7%B5/" rel="tag">实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%94%E7%94%A8/" rel="tag">应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag">深度学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 20px;">AI</a> <a href="/tags/%E4%BA%A7%E4%B8%9A/" style="font-size: 10px;">产业</a> <a href="/tags/%E5%8E%86%E5%8F%B2/" style="font-size: 10px;">历史</a> <a href="/tags/%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">实践</a> <a href="/tags/%E5%BA%94%E7%94%A8/" style="font-size: 10px;">应用</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 15px;">深度学习</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">五月 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/05/27/AI%E6%8A%80%E6%9C%AF%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8/">AI技术的实际应用</a>
+          </li>
+        
+          <li>
+            <a href="/2026/05/27/AI%E7%9A%84%E6%A0%B8%E5%BF%83%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">AI的核心算法概述</a>
+          </li>
+        
+          <li>
+            <a href="/2026/05/27/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%9A%84%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/">人工智能的发展历程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 xiaoLin<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
