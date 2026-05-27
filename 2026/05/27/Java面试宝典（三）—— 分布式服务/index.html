@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Java面试宝典（三）—— 分布式服务 | xiaoLin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="引言随着业务规模的增长，单体架构逐渐向分布式&#x2F;微服务架构演进。分布式系统相关的知识点是中高级 Java 面试的重头戏。本文将从分布式理论、消息队列、缓存、数据库等角度系统梳理。 一、分布式理论基础1.1 CAP 定理面试官常问：请解释 CAP 定理。 分布式系统无法同时满足以下三个特性：    特性 说明    Consistency（一致性） 所有节点在同一时刻看到相同的数据   Av">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java面试宝典（三）—— 分布式服务">
+<meta property="og:url" content="https://doudouworld.github.io/2026/05/27/Java%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94%20%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1/index.html">
+<meta property="og:site_name" content="xiaoLin">
+<meta property="og:description" content="引言随着业务规模的增长，单体架构逐渐向分布式&#x2F;微服务架构演进。分布式系统相关的知识点是中高级 Java 面试的重头戏。本文将从分布式理论、消息队列、缓存、数据库等角度系统梳理。 一、分布式理论基础1.1 CAP 定理面试官常问：请解释 CAP 定理。 分布式系统无法同时满足以下三个特性：    特性 说明    Consistency（一致性） 所有节点在同一时刻看到相同的数据   Av">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-05-27T07:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-27T02:56:08.702Z">
+<meta property="article:author" content="xiaoLin">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="面试">
+<meta property="article:tag" content="分布式">
+<meta property="article:tag" content="微服务">
+<meta property="article:tag" content="中间件">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="xiaoLin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">xiaoLin</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个热爱技术与创造的个人博客</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://doudouworld.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Java面试宝典（三）—— 分布式服务" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/05/27/Java%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94%20%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1/" class="article-date">
+  <time class="dt-published" datetime="2026-05-27T07:00:00.000Z" itemprop="datePublished">2026-05-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8/">Java面试宝典</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Java面试宝典（三）—— 分布式服务
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着业务规模的增长，单体架构逐渐向分布式&#x2F;微服务架构演进。分布式系统相关的知识点是中高级 Java 面试的重头戏。本文将从分布式理论、消息队列、缓存、数据库等角度系统梳理。</p>
+<h2 id="一、分布式理论基础"><a href="#一、分布式理论基础" class="headerlink" title="一、分布式理论基础"></a>一、分布式理论基础</h2><h3 id="1-1-CAP-定理"><a href="#1-1-CAP-定理" class="headerlink" title="1.1 CAP 定理"></a>1.1 CAP 定理</h3><p><strong>面试官常问：请解释 CAP 定理。</strong></p>
+<p>分布式系统无法同时满足以下三个特性：</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Consistency（一致性）</td>
+<td>所有节点在同一时刻看到相同的数据</td>
+</tr>
+<tr>
+<td>Availability（可用性）</td>
+<td>每个请求都能在合理时间内收到响应</td>
+</tr>
+<tr>
+<td>Partition Tolerance（分区容错性）</td>
+<td>节点间网络通信故障时，系统仍能继续运行</td>
+</tr>
+</tbody></table>
+<p><strong>结论：分布式系统必须保证 P，只能在 C 和 A 之间二选一。</strong></p>
+<ul>
+<li><strong>CP 系统</strong>：ZooKeeper、HBase、Nacos（CP 模式）。网络分区时牺牲可用性，保证一致性</li>
+<li><strong>AP 系统</strong>：Eureka、Nacos（AP 模式）、Cassandra。网络分区时牺牲一致性，保证可用性</li>
+</ul>
+<h3 id="1-2-BASE-理论"><a href="#1-2-BASE-理论" class="headerlink" title="1.2 BASE 理论"></a>1.2 BASE 理论</h3><p>BASE 是对 CAP 中 AP 方案的延伸：</p>
+<ul>
+<li><strong>Basically Available</strong>：基本可用，允许部分功能不可用（如降级、限流）</li>
+<li><strong>Soft State</strong>：软状态，允许数据存在中间状态</li>
+<li><strong>Eventually Consistent</strong>：最终一致性，经过一段时间后所有节点数据一致</li>
+</ul>
+<h3 id="1-3-分布式一致性算法"><a href="#1-3-分布式一致性算法" class="headerlink" title="1.3 分布式一致性算法"></a>1.3 分布式一致性算法</h3><h4 id="Paxos"><a href="#Paxos" class="headerlink" title="Paxos"></a>Paxos</h4><ul>
+<li>最经典的分布式一致性算法</li>
+<li>角色：Proposer（提案者）、Acceptor（接受者）、Learner（学习者）</li>
+<li>两阶段提交，保证多数派节点达成一致</li>
+<li>理解困难，实际工程中较少直接使用</li>
+</ul>
+<h4 id="Raft"><a href="#Raft" class="headerlink" title="Raft"></a>Raft</h4><ul>
+<li>更易理解的强一致性算法，etcd、TiDB 等广泛使用</li>
+<li>角色：Leader、Follower、Candidate</li>
+<li>核心流程：<ol>
+<li><strong>Leader 选举</strong>：Follower 超时后转为 Candidate，发起选举</li>
+<li><strong>日志复制</strong>：Leader 接收写请求，将日志复制给 Follower</li>
+<li><strong>安全性保证</strong>：任期编号（Term）保证选举的单调性</li>
+</ol>
+</li>
+</ul>
+<h4 id="ZAB（ZooKeeper-Atomic-Broadcast）"><a href="#ZAB（ZooKeeper-Atomic-Broadcast）" class="headerlink" title="ZAB（ZooKeeper Atomic Broadcast）"></a>ZAB（ZooKeeper Atomic Broadcast）</h4><ul>
+<li>ZooKeeper 专用的一致性协议</li>
+<li>类似 Raft，有 Leader 和 Follower 角色</li>
+<li>两种模式：恢复模式（选举）和广播模式（同步）</li>
+</ul>
+<h2 id="二、分布式锁"><a href="#二、分布式锁" class="headerlink" title="二、分布式锁"></a>二、分布式锁</h2><h3 id="2-1-为什么需要分布式锁？"><a href="#2-1-为什么需要分布式锁？" class="headerlink" title="2.1 为什么需要分布式锁？"></a>2.1 为什么需要分布式锁？</h3><p>单机环境下 <code>synchronized</code> &#x2F; <code>ReentrantLock</code> 足以保证线程安全。但在分布式环境中，多个服务实例可能同时访问共享资源，需要跨进程的锁机制。</p>
+<h3 id="2-2-基于数据库"><a href="#2-2-基于数据库" class="headerlink" title="2.2 基于数据库"></a>2.2 基于数据库</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 获取锁</span></span><br><span class="line"><span class="keyword">INSERT INTO</span> distributed_lock (lock_key, owner, expire_time)</span><br><span class="line"><span class="keyword">VALUES</span> (<span class="string">&#x27;order_lock&#x27;</span>, <span class="string">&#x27;instance-1&#x27;</span>, NOW() <span class="operator">+</span> <span class="type">INTERVAL</span> <span class="number">30</span> <span class="keyword">SECOND</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 释放锁</span></span><br><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> distributed_lock <span class="keyword">WHERE</span> lock_key <span class="operator">=</span> <span class="string">&#x27;order_lock&#x27;</span> <span class="keyword">AND</span> owner <span class="operator">=</span> <span class="string">&#x27;instance-1&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>优点</strong>：简单，依赖已有的数据库</li>
+<li><strong>缺点</strong>：性能差，锁不可重入，数据库单点</li>
+</ul>
+<h3 id="2-3-基于-Redis（Redisson）"><a href="#2-3-基于-Redis（Redisson）" class="headerlink" title="2.3 基于 Redis（Redisson）"></a>2.3 基于 Redis（Redisson）</h3><p><strong>最常用方案：Redisson</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">RLock</span> <span class="variable">lock</span> <span class="operator">=</span> redisson.getLock(<span class="string">&quot;order_lock&quot;</span>);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 自动续期，默认 30 秒</span></span><br><span class="line">    lock.lock();</span><br><span class="line">    <span class="comment">// 业务逻辑</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    lock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Redis 实现分布式锁的演进：</strong></p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SETNX + EXPIRE</td>
+<td>非原子操作，SETNX 成功但 EXPIRE 失败导致死锁</td>
+</tr>
+<tr>
+<td>SET key value NX EX seconds</td>
+<td>原子操作，解决了上一步问题</td>
+</tr>
+<tr>
+<td>Redisson（Lua 脚本）</td>
+<td>解决了可重入、自动续期（WatchDog）、公平锁等问题</td>
+</tr>
+</tbody></table>
+<p><strong>Redlock 算法</strong>：</p>
+<p>Redis 集群环境下，在 N 个独立 Redis 节点上依次获取锁，多数节点成功才算获取成功。但 Redlock 存在争议（Martin Kleppmann 提出时钟跳变等问题），实际工程中使用 Redis 主从 + Sentinel&#x2F;Cluster 配合业务补偿即可。</p>
+<h3 id="2-4-基于-ZooKeeper"><a href="#2-4-基于-ZooKeeper" class="headerlink" title="2.4 基于 ZooKeeper"></a>2.4 基于 ZooKeeper</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">创建临时顺序节点 → /locks/order/lock_00000001</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>利用 ZooKeeper 的临时节点 + Watcher 机制</li>
+<li><strong>可重入</strong>：记录获取锁的线程和次数</li>
+<li><strong>强一致性</strong>：ZK 本身保证 CP</li>
+<li><strong>缺点</strong>：性能不如 Redis</li>
+</ul>
+<h3 id="2-5-三种方案对比"><a href="#2-5-三种方案对比" class="headerlink" title="2.5 三种方案对比"></a>2.5 三种方案对比</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Redis</th>
+<th>ZooKeeper</th>
+<th>数据库</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>性能</td>
+<td>高</td>
+<td>中</td>
+<td>低</td>
+</tr>
+<tr>
+<td>一致性</td>
+<td>最终一致</td>
+<td>强一致</td>
+<td>强一致</td>
+</tr>
+<tr>
+<td>可靠性</td>
+<td>主从切换可能丢锁</td>
+<td>可靠</td>
+<td>可靠</td>
+</tr>
+<tr>
+<td>可重入</td>
+<td>Redisson 支持</td>
+<td>支持</td>
+<td>需自行实现</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>高并发、允许偶尔重试</td>
+<td>对一致性要求极高</td>
+<td>简单场景</td>
+</tr>
+</tbody></table>
+<h2 id="三、消息队列"><a href="#三、消息队列" class="headerlink" title="三、消息队列"></a>三、消息队列</h2><h3 id="3-1-为什么使用消息队列？"><a href="#3-1-为什么使用消息队列？" class="headerlink" title="3.1 为什么使用消息队列？"></a>3.1 为什么使用消息队列？</h3><ul>
+<li><strong>解耦</strong>：生产者和消费者不直接依赖</li>
+<li><strong>异步</strong>：将非核心流程异步化，提升响应速度</li>
+<li><strong>削峰</strong>：高并发请求先入队列，消费者按自身能力处理</li>
+</ul>
+<h3 id="3-2-Kafka-vs-RocketMQ-vs-RabbitMQ"><a href="#3-2-Kafka-vs-RocketMQ-vs-RabbitMQ" class="headerlink" title="3.2 Kafka vs RocketMQ vs RabbitMQ"></a>3.2 Kafka vs RocketMQ vs RabbitMQ</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Kafka</th>
+<th>RocketMQ</th>
+<th>RabbitMQ</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>开发语言</td>
+<td>Scala</td>
+<td>Java</td>
+<td>Erlang</td>
+</tr>
+<tr>
+<td>吞吐量</td>
+<td>极高（百万级 TPS）</td>
+<td>高（十万级 TPS）</td>
+<td>中（万级 TPS）</td>
+</tr>
+<tr>
+<td>延迟</td>
+<td>毫秒级</td>
+<td>毫秒级</td>
+<td>微秒级</td>
+</tr>
+<tr>
+<td>消息可靠性</td>
+<td>可配置</td>
+<td>高（事务消息）</td>
+<td>高</td>
+</tr>
+<tr>
+<td>消息堆积</td>
+<td>支持</td>
+<td>支持</td>
+<td>一般</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>日志采集、大数据</td>
+<td>金融、电商</td>
+<td>中小企业、轻量级</td>
+</tr>
+</tbody></table>
+<h3 id="3-3-如何保证消息不丢失？"><a href="#3-3-如何保证消息不丢失？" class="headerlink" title="3.3 如何保证消息不丢失？"></a>3.3 如何保证消息不丢失？</h3><p><strong>消息丢失的三个环节：</strong></p>
+<ol>
+<li><p><strong>生产者发送丢失</strong></p>
+<ul>
+<li>Kafka：<code>acks=all</code>（ISR 全部确认）</li>
+<li>RocketMQ：同步发送 + 检查 SendResult</li>
+<li>RabbitMQ：<code>confirm</code> 回调机制</li>
+</ul>
+</li>
+<li><p><strong>Broker 存储丢失</strong></p>
+<ul>
+<li>Kafka：<code>replication.factor &gt;= 3</code>，<code>min.insync.replicas &gt;= 2</code></li>
+<li>RocketMQ：同步刷盘（SYNC_FLUSH）</li>
+<li>确保多副本机制开启</li>
+</ul>
+</li>
+<li><p><strong>消费者消费丢失</strong></p>
+<ul>
+<li>关闭自动提交（<code>enable.auto.commit = false</code>）</li>
+<li>消费完成后再手动确认（ACK）</li>
+<li>先执行逻辑，再提交 offset</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-4-如何保证消息不重复？"><a href="#3-4-如何保证消息不重复？" class="headerlink" title="3.4 如何保证消息不重复？"></a>3.4 如何保证消息不重复？</h3><p>消费者端的幂等处理：</p>
+<ul>
+<li><strong>唯一索引</strong>：数据库唯一约束，重复插入报错</li>
+<li><strong>Redis 去重</strong>：<code>SETNX message_id</code>，成功则处理</li>
+<li><strong>状态机</strong>：利用状态转移的幂等性（如 <code>UPDATE status = &#39;PAID&#39; WHERE id = ? AND status = &#39;UNPAID&#39;</code>）</li>
+</ul>
+<h3 id="3-5-如何保证消息顺序？"><a href="#3-5-如何保证消息顺序？" class="headerlink" title="3.5 如何保证消息顺序？"></a>3.5 如何保证消息顺序？</h3><ul>
+<li><strong>Kafka</strong>：同一 Partition 内有序，确保相同 key 发送到同一 Partition</li>
+<li><strong>RocketMQ</strong>：顺序消息，同一个 MessageQueue 内 FIFO</li>
+<li><strong>RabbitMQ</strong>：单消费者 + 单队列保证顺序</li>
+</ul>
+<p><strong>注意：</strong> 全局有序性能极差，一般只需要保证<strong>局部有序</strong>（如同一订单的操作有序）。</p>
+<h3 id="3-6-消息积压怎么处理？"><a href="#3-6-消息积压怎么处理？" class="headerlink" title="3.6 消息积压怎么处理？"></a>3.6 消息积压怎么处理？</h3><ol>
+<li><strong>临时扩容</strong>：增加 Consumer 实例，提高消费速度</li>
+<li><strong>快速处理</strong>：临时Consumer 只转发消息到新 Topic，新 Consumer 集群做精细处理</li>
+<li><strong>排查原因</strong>：消费速度慢、死循环、下游服务不可用等</li>
+<li><strong>监控预警</strong>：设置积压阈值告警</li>
+</ol>
+<h2 id="四、分布式缓存"><a href="#四、分布式缓存" class="headerlink" title="四、分布式缓存"></a>四、分布式缓存</h2><h3 id="4-1-Redis-基础"><a href="#4-1-Redis-基础" class="headerlink" title="4.1 Redis 基础"></a>4.1 Redis 基础</h3><p><strong>面试官常问：Redis 有哪些数据类型？</strong></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>使用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String</td>
+<td>缓存、计数器、分布式锁</td>
+</tr>
+<tr>
+<td>Hash</td>
+<td>对象存储、购物车</td>
+</tr>
+<tr>
+<td>List</td>
+<td>消息队列、最新 N 条记录</td>
+</tr>
+<tr>
+<td>Set</td>
+<td>标签、好友关系、抽奖</td>
+</tr>
+<tr>
+<td>ZSet</td>
+<td>排行榜、延迟队列</td>
+</tr>
+<tr>
+<td>Bitmap</td>
+<td>签到、日活统计</td>
+</tr>
+<tr>
+<td>HyperLogLog</td>
+<td>基数统计（UV）</td>
+</tr>
+<tr>
+<td>GEO</td>
+<td>地理位置、附近的人</td>
+</tr>
+</tbody></table>
+<h3 id="4-2-缓存穿透、击穿、雪崩"><a href="#4-2-缓存穿透、击穿、雪崩" class="headerlink" title="4.2 缓存穿透、击穿、雪崩"></a>4.2 缓存穿透、击穿、雪崩</h3><p><strong>面试官必考三问：</strong></p>
+<h4 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h4><p><strong>问题</strong>：查询一个不存在的数据，缓存不命中，请求直接打到数据库。</p>
+<p><strong>解决方案：</strong></p>
+<ul>
+<li><strong>布隆过滤器</strong>：在缓存层前置布隆过滤器，快速判断 key 是否可能存在于数据库</li>
+<li><strong>缓存空值</strong>：对查询结果为空的也进行缓存（设置较短 TTL）</li>
+<li><strong>参数校验</strong>：对明显非法的请求直接拒绝</li>
+</ul>
+<h4 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h4><p><strong>问题</strong>：热点 key 过期瞬间，大量请求同时打到数据库。</p>
+<p><strong>解决方案：</strong></p>
+<ul>
+<li><strong>互斥锁</strong>：只允许一个线程查询数据库，其他线程等待</li>
+<li><strong>逻辑过期</strong>：缓存中不设置 TTL，而是存储过期时间字段，由异步线程更新</li>
+<li><strong>永不过期</strong>：热点数据设置不主动过期，通过后台任务更新</li>
+</ul>
+<h4 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h4><p><strong>问题</strong>：大量缓存 key 在同一时间过期，或 Redis 宕机，请求全部打到数据库。</p>
+<p><strong>解决方案：</strong></p>
+<ul>
+<li><strong>随机过期时间</strong>：在 TTL 基础上加一个随机值，避免同时过期</li>
+<li><strong>Redis 集群</strong>：保证高可用</li>
+<li><strong>限流降级</strong>：使用 Sentinel&#x2F;Hystrix 限制并发请求</li>
+<li><strong>多级缓存</strong>：本地缓存 + Redis 缓存</li>
+</ul>
+<h3 id="4-3-缓存与数据库一致性"><a href="#4-3-缓存与数据库一致性" class="headerlink" title="4.3 缓存与数据库一致性"></a>4.3 缓存与数据库一致性</h3><p><strong>面试官常问：如何保证缓存和数据库的数据一致性？</strong></p>
+<p>常见方案：</p>
+<ol>
+<li><p><strong>Cache Aside Pattern</strong>（旁路缓存，最常用）</p>
+<ul>
+<li>读：先查缓存，没有则查数据库并写缓存</li>
+<li>写：先更新数据库，再删除缓存</li>
+<li><strong>为什么删除而不是更新缓存？</strong>：避免并发写导致脏数据，减少写缓存开销</li>
+<li><strong>为什么先更新数据库再删除缓存？</strong>：先删缓存可能导致更新期间的脏数据被重新写入缓存</li>
+</ul>
+</li>
+<li><p><strong>延迟双删</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">先删缓存 → 更新数据库 → 休眠 N 毫秒 → 再删缓存</span><br></pre></td></tr></table></figure>
+<p>解决”先删缓存，更新数据库期间，其他线程读到旧数据并写入缓存”的问题。</p>
+</li>
+<li><p><strong>订阅 Binlog</strong></p>
+<ul>
+<li>使用 Canal 监听 MySQL Binlog</li>
+<li>自动同步到 Redis，解耦业务代码</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-4-Redis-持久化"><a href="#4-4-Redis-持久化" class="headerlink" title="4.4 Redis 持久化"></a>4.4 Redis 持久化</h3><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>原理</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RDB</td>
+<td>定时快照</td>
+<td>恢复快，文件小</td>
+<td>可能丢失最后一次快照后的数据</td>
+</tr>
+<tr>
+<td>AOF</td>
+<td>记录每条写命令</td>
+<td>数据更安全</td>
+<td>文件大，恢复慢</td>
+</tr>
+<tr>
+<td>混合持久化（JDK 4.0+）</td>
+<td>AOF + RDB 优点</td>
+<td>兼顾速度和安全性</td>
+<td>-</td>
+</tr>
+</tbody></table>
+<h3 id="4-5-Redis-集群方案"><a href="#4-5-Redis-集群方案" class="headerlink" title="4.5 Redis 集群方案"></a>4.5 Redis 集群方案</h3><table>
+<thead>
+<tr>
+<th>方案</th>
+<th>说明</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>主从复制</td>
+<td>一主多从，读写分离</td>
+<td>不能自动故障转移</td>
+</tr>
+<tr>
+<td>哨兵模式</td>
+<td>监控 + 自动故障转移</td>
+<td>单点写，不能水平扩展</td>
+</tr>
+<tr>
+<td>Cluster</td>
+<td>数据分片（16384 个 Slot）</td>
+<td>高可用 + 水平扩展</td>
+</tr>
+</tbody></table>
+<h2 id="五、分布式事务"><a href="#五、分布式事务" class="headerlink" title="五、分布式事务"></a>五、分布式事务</h2><h3 id="5-1-2PC（两阶段提交）"><a href="#5-1-2PC（两阶段提交）" class="headerlink" title="5.1 2PC（两阶段提交）"></a>5.1 2PC（两阶段提交）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">阶段一（Prepare）：协调者询问所有参与者是否能提交</span><br><span class="line">阶段二（Commit/Rollback）：根据阶段一结果决定提交或回滚</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>优点</strong>：强一致性</li>
+<li><strong>缺点</strong>：阻塞协议，协调者单点，性能差</li>
+</ul>
+<h3 id="5-2-TCC（Try-Confirm-Cancel）"><a href="#5-2-TCC（Try-Confirm-Cancel）" class="headerlink" title="5.2 TCC（Try-Confirm-Cancel）"></a>5.2 TCC（Try-Confirm-Cancel）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Try：检查并预留资源</span><br><span class="line">Confirm：真正执行业务（不做检查）</span><br><span class="line">Cancel：释放 Try 阶段预留的资源</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>优点</strong>：性能比 2PC 好</li>
+<li><strong>缺点</strong>：业务侵入性强，需要实现三个接口</li>
+<li><strong>框架</strong>：Seata TCC、Himly</li>
+</ul>
+<h3 id="5-3-本地消息表"><a href="#5-3-本地消息表" class="headerlink" title="5.3 本地消息表"></a>5.3 本地消息表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 业务操作和消息写入在同一本地事务</span><br><span class="line">2. 定时任务扫描未发送的消息并投递到 MQ</span><br><span class="line">3. 消费方处理成功后确认</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>优点</strong>：实现简单，不依赖外部组件</li>
+<li><strong>缺点</strong>：消息表耦合在业务数据库中</li>
+</ul>
+<h3 id="5-4-RocketMQ-事务消息"><a href="#5-4-RocketMQ-事务消息" class="headerlink" title="5.4 RocketMQ 事务消息"></a>5.4 RocketMQ 事务消息</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 发送 Half 消息（对消费者不可见）</span><br><span class="line">2. 执行本地事务</span><br><span class="line">3. 根据本地事务结果 Commit/Rollback Half 消息</span><br><span class="line">4. RocketMQ 回查长时间未确认的事务状态</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>优点</strong>：最终一致性，业务解耦</li>
+<li><strong>缺点</strong>：仅 RocketMQ 支持</li>
+</ul>
+<h3 id="5-5-Seata"><a href="#5-5-Seata" class="headerlink" title="5.5 Seata"></a>5.5 Seata</h3><p>阿里开源的分布式事务解决方案：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>说明</th>
+<th>性能</th>
+<th>一致性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AT</td>
+<td>自动生成 SQL 补偿，对业务无侵入</td>
+<td>中</td>
+<td>最终一致</td>
+</tr>
+<tr>
+<td>TCC</td>
+<td>手动实现 Try&#x2F;Confirm&#x2F;Cancel</td>
+<td>高</td>
+<td>最终一致</td>
+</tr>
+<tr>
+<td>SAGA</td>
+<td>长事务，每个操作有补偿</td>
+<td>中</td>
+<td>最终一致</td>
+</tr>
+<tr>
+<td>XA</td>
+<td>标准 XA 协议，强一致</td>
+<td>低</td>
+<td>强一致</td>
+</tr>
+</tbody></table>
+<h2 id="六、分布式-ID-生成"><a href="#六、分布式-ID-生成" class="headerlink" title="六、分布式 ID 生成"></a>六、分布式 ID 生成</h2><h3 id="6-1-方案对比"><a href="#6-1-方案对比" class="headerlink" title="6.1 方案对比"></a>6.1 方案对比</h3><table>
+<thead>
+<tr>
+<th>方案</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UUID</td>
+<td>简单，本地生成</td>
+<td>无序，不适合作为 MySQL 主键</td>
+</tr>
+<tr>
+<td>数据库自增</td>
+<td>有序，简单</td>
+<td>单点，性能瓶颈</td>
+</tr>
+<tr>
+<td>号段模式</td>
+<td>批量获取，减轻数据库压力</td>
+<td>依赖数据库</td>
+</tr>
+<tr>
+<td>雪花算法</td>
+<td>高性能，有序，无依赖</td>
+<td>时钟回拨问题</td>
+</tr>
+<tr>
+<td>Leaf（美团）</td>
+<td>号段 + 雪花，高可用</td>
+<td>需要部署服务</td>
+</tr>
+</tbody></table>
+<h3 id="6-2-雪花算法"><a href="#6-2-雪花算法" class="headerlink" title="6.2 雪花算法"></a>6.2 雪花算法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">64 位 = 1 位符号 + 41 位时间戳 + 10 位机器 ID + 12 位序列号</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>41 位时间戳：约 69 年</li>
+<li>10 位机器 ID：1024 台机器</li>
+<li>12 位序列号：每毫秒 4096 个 ID</li>
+</ul>
+<p><strong>时钟回拨问题解决方案：</strong></p>
+<ul>
+<li>记录上次时间戳，发现回拨时拒绝服务直到时间追平</li>
+<li>使用更细粒度的时间戳</li>
+<li>引入 NTP 同步</li>
+</ul>
+<h2 id="七、常见面试题"><a href="#七、常见面试题" class="headerlink" title="七、常见面试题"></a>七、常见面试题</h2><h3 id="Q1：如何设计一个高可用系统？"><a href="#Q1：如何设计一个高可用系统？" class="headerlink" title="Q1：如何设计一个高可用系统？"></a>Q1：如何设计一个高可用系统？</h3><ol>
+<li><strong>冗余</strong>：多实例部署，避免单点故障</li>
+<li><strong>负载均衡</strong>：Nginx&#x2F;Gateway 分发流量</li>
+<li><strong>限流降级</strong>：Sentinel 控制并发，异常时返回兜底数据</li>
+<li><strong>监控告警</strong>：Prometheus + Grafana + 告警通知</li>
+<li><strong>异地多活</strong>：多机房&#x2F;多地域部署，流量就近路由</li>
+</ol>
+<h3 id="Q2：微服务如何拆分？"><a href="#Q2：微服务如何拆分？" class="headerlink" title="Q2：微服务如何拆分？"></a>Q2：微服务如何拆分？</h3><ul>
+<li><strong>DDD 领域驱动设计</strong>：按业务限界上下文（Bounded Context）拆分</li>
+<li><strong>单一职责</strong>：一个服务只负责一个业务能力</li>
+<li><strong>数据自治</strong>：每个服务拥有独立的数据库</li>
+<li><strong>团队对齐</strong>：服务边界和团队职责边界一致（康威定律）</li>
+</ul>
+<h3 id="Q3：接口鉴权怎么做？"><a href="#Q3：接口鉴权怎么做？" class="headerlink" title="Q3：接口鉴权怎么做？"></a>Q3：接口鉴权怎么做？</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">客户端登录 → 获取 Token（JWT）</span><br><span class="line">  → 后续请求携带 Token</span><br><span class="line">  → 网关/拦截器验证 Token 有效性</span><br><span class="line">  → 通过则放行，不通过返回 401</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>JWT 方案</strong>：无状态，适合分布式系统</li>
+<li><strong>Session + Redis 方案</strong>：服务端可控，支持主动踢人</li>
+<li><strong>OAuth 2.0</strong>：第三方授权</li>
+</ul>
+<h3 id="Q4：如何做接口幂等？"><a href="#Q4：如何做接口幂等？" class="headerlink" title="Q4：如何做接口幂等？"></a>Q4：如何做接口幂等？</h3><ul>
+<li>Token 机制：请求前获取唯一 Token，提交时校验并删除</li>
+<li>乐观锁：版本号&#x2F;CAS 机制</li>
+<li>唯一索引：数据库唯一约束</li>
+<li>防重表：记录已处理的请求 ID</li>
+</ul>
+<h3 id="Q5：如何实现灰度发布？"><a href="#Q5：如何实现灰度发布？" class="headerlink" title="Q5：如何实现灰度发布？"></a>Q5：如何实现灰度发布？</h3><ul>
+<li><strong>网关层</strong>：根据用户 ID、地区等规则路由到新版本服务</li>
+<li><strong>注册中心</strong>：Nacos 支持基于权重的流量分配</li>
+<li><strong>K8s Ingress</strong>：基于 Label 的流量调度</li>
+</ul>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>分布式系统的核心在于理解”分而治之”的思想，接受最终一致性，处理好网络不可靠的前提。面试中不必纠结具体组件的配置细节，重点在于理解每种方案的设计权衡、适用场景和局限性。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://doudouworld.github.io/2026/05/27/Java%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94%20%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1/" data-id="cmpnh2tw6000mvsv3bmhydirl" data-title="Java面试宝典（三）—— 分布式服务" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag">中间件</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/05/27/Java%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94%20Spring%E5%85%A8%E5%AE%B6%E6%A1%B6%E6%A0%B8%E5%BF%83/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">Java面试宝典（二）—— Spring全家桶核心</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8/">Java面试宝典</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag">中间件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A7%E4%B8%9A/" rel="tag">产业</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%86%E5%8F%B2/" rel="tag">历史</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80/" rel="tag">基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E8%B7%B5/" rel="tag">实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%94%E7%94%A8/" rel="tag">应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag">深度学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 20px;">AI</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Boot/" style="font-size: 10px;">Spring Boot</a> <a href="/tags/Spring-Cloud/" style="font-size: 10px;">Spring Cloud</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" style="font-size: 10px;">中间件</a> <a href="/tags/%E4%BA%A7%E4%B8%9A/" style="font-size: 10px;">产业</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%8E%86%E5%8F%B2/" style="font-size: 10px;">历史</a> <a href="/tags/%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">基础</a> <a href="/tags/%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">实践</a> <a href="/tags/%E5%BA%94%E7%94%A8/" style="font-size: 10px;">应用</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 15px;">深度学习</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 20px;">面试</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">五月 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/05/27/Java%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94%20%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1/">Java面试宝典（三）—— 分布式服务</a>
+          </li>
+        
+          <li>
+            <a href="/2026/05/27/Java%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94%20Spring%E5%85%A8%E5%AE%B6%E6%A1%B6%E6%A0%B8%E5%BF%83/">Java面试宝典（二）—— Spring全家桶核心</a>
+          </li>
+        
+          <li>
+            <a href="/2026/05/27/Java%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%20Java%E5%9F%BA%E7%A1%80%E6%A0%B8%E5%BF%83/">Java面试宝典（一）—— Java基础核心</a>
+          </li>
+        
+          <li>
+            <a href="/2026/05/27/AI%E6%8A%80%E6%9C%AF%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8/">AI技术的实际应用</a>
+          </li>
+        
+          <li>
+            <a href="/2026/05/27/AI%E7%9A%84%E6%A0%B8%E5%BF%83%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">AI的核心算法概述</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 xiaoLin<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
