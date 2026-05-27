@@ -1,0 +1,28 @@
+#footer
+  background: color-footer-background
+  padding: 60px 0
+  border-top: 1px solid color-border
+  color: color-footer-text
+  position: relative
+  &:before
+    content: ''
+    position: absolute
+    top: 0
+    left: 50%
+    transform: translateX(-50%)
+    width: 60px
+    height: 2px
+    background: linear-gradient(90deg, #f0883e, #58a6ff)
+    border-radius: 1px
+  a
+    color: color-link
+    text-decoration: none
+    transition: color 0.2s ease
+    &:hover
+      color: color-accent
+      text-decoration: none
+
+#footer-info
+  line-height: line-height
+  font-size: 0.85em
+  text-align: center
